@@ -1,25 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class collidertext : MonoBehaviour
+public class ColliderText : MonoBehaviour
 {
-    public GameObject dialogue,collider;
-    public string dialogueString;    
-    public float dialogueTime;
+    public GameObject dialogue;          // UI Text
+    public GameObject firstTrigger;      // Collider pertama (untuk menampilkan teks)
+    public GameObject secondTrigger;     // Collider kedua (untuk menghilangkan teks)
+
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("MainCamera"))
-        {          
-            dialogue.SetActive(true);
-            StartCoroutine(disableDialogue());
-            collider.SetActive(false);
+        if (other.gameObject == firstTrigger) // Jika menyentuh collider pertama
+        {
+            dialogue.SetActive(true);        // Tampilkan teks
         }
-    }
-    IEnumerator disableDialogue()
-    {
-        yield return new WaitForSeconds(3);
-        dialogue.SetActive(false);
+
+        if (other.gameObject == secondTrigger) // Jika menyentuh collider kedua
+        {
+            dialogue.SetActive(false);       // Hilangkan teks
+        }
     }
 }

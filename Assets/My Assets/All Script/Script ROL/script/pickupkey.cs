@@ -55,4 +55,5 @@ public class Pickupkey : MonoBehaviour
         dialogue.SetActive(false);
         toggle = false;
     }
+
 }

@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,12 +23,15 @@ public class DialogManager : MonoBehaviour
     private Coroutine typingCoroutine;
     private string currentLine;
 
+    private Action onDialogFinishedCallback; // ✅ Tambahan untuk callback
+
     void Start()
     {
         dialogUI.SetActive(false);
     }
 
-    public void StartDialog(string[] dialogLines, string[] speakerNames, AudioClip[] clips)
+    // ✅ Ditambahkan parameter callback
+    public void StartDialog(string[] dialogLines, string[] speakerNames, AudioClip[] clips, Action onFinished = null)
     {
         lines = dialogLines;
         speakers = speakerNames;
@@ -35,6 +39,9 @@ public class DialogManager : MonoBehaviour
 
         currentLineIndex = 0;
         dialogUI.SetActive(true);
+
+        onDialogFinishedCallback = onFinished; // Simpan callback
+
         ShowNextLine();
     }
 
@@ -47,7 +54,7 @@ public class DialogManager : MonoBehaviour
             isTyping = false;
 
             if (audioSource.isPlaying)
-                audioSource.Stop(); // Hentikan suara jika typing di-skip
+                audioSource.Stop();
 
             return;
         }
@@ -57,7 +64,6 @@ public class DialogManager : MonoBehaviour
             nameText.text = speakers[currentLineIndex];
             currentLine = lines[currentLineIndex];
 
-            // Mainkan suara
             if (voiceClips != null && currentLineIndex < voiceClips.Length && voiceClips[currentLineIndex] != null)
             {
                 audioSource.Stop();
@@ -79,6 +85,13 @@ public class DialogManager : MonoBehaviour
             {
                 npcAnimator.SetTrigger(endDialogTrigger);
             }
+
+            // ✅ Panggil callback setelah dialog selesai
+            if (onDialogFinishedCallback != null)
+            {
+                onDialogFinishedCallback.Invoke();
+                onDialogFinishedCallback = null; // reset supaya aman
+            }
         }
     }
 
@@ -95,7 +108,6 @@ public class DialogManager : MonoBehaviour
 
         isTyping = false;
 
-        // ?? Tambahan penting: Hentikan suara ketika typing selesai
         if (audioSource.isPlaying)
             audioSource.Stop();
     }

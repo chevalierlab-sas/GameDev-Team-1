@@ -3,7 +3,7 @@ using UnityEngine;
 public class DisableObjectOnCollision : MonoBehaviour
 {
     public GameObject objectToDisable;  // Objek yang akan dinonaktifkan
-    public string playerTag = "Player"; // Tag dari player
+    public string playerTag = "MainCamera"; // Tag dari player
 
     private void OnTriggerEnter(Collider other)
     {

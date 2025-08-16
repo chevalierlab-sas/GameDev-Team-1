@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Latter
   - Pickupable
+  - Switch
+  - SceneTrigger
   layers:
   - Default
   - TransparentFX

@@ -4,6 +4,8 @@ public class DialogTrigger : MonoBehaviour
 {
     public DialogManager dialogManager;
 
+    public SC_FPSController playerMovement; // Ganti dengan script pergerakanmu
+
     // Dialog versi multibahasa
     public string[] dialogLines_ID;
     public string[] dialogLines_EN;
@@ -20,23 +22,28 @@ public class DialogTrigger : MonoBehaviour
     {
         if (other.CompareTag("MainCamera") && !hasTriggered)
         {
+            hasTriggered = true;
+
+            // Nonaktifkan gerakan (tapi bukan kamera)
+            if (playerMovement != null)
+                playerMovement.canMove = false;
+
             string language = PlayerPrefs.GetString("LANGUAGE");
 
             if (language == "INDONESIAN")
             {
-                dialogManager.StartDialog(dialogLines_ID, speakers_ID, voiceClips_ID);
-            }
-            else if (language == "ENGLISH")
-            {
-                dialogManager.StartDialog(dialogLines_EN, speakers_EN, voiceClips_EN);
+                dialogManager.StartDialog(dialogLines_ID, speakers_ID, voiceClips_ID, OnDialogFinished);
             }
             else
             {
-                // Default fallback
-                dialogManager.StartDialog(dialogLines_EN, speakers_EN, voiceClips_EN);
+                dialogManager.StartDialog(dialogLines_EN, speakers_EN, voiceClips_EN, OnDialogFinished);
             }
-
-            hasTriggered = true;
         }
+    }
+
+    void OnDialogFinished()
+    {
+        if (playerMovement != null)
+            playerMovement.canMove = true;
     }
 }

@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
         else
             Destroy(gameObject);
 
-        DontDestroyOnLoad(gameObject); // agar tidak hilang saat load ulang
     }
 
     public void SetCheckpoint(Vector3 pos)

@@ -10,7 +10,7 @@ public class ColliderTriggerOther : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !hasTriggered)
+        if (other.CompareTag("MainCamera") && !hasTriggered)
         {
             if (targetCollider != null)
             {
